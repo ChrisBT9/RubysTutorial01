@@ -1,10 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RubyController : MonoBehaviour
 {
      public float speed = 3.0f;
+
+     public GameObject GameOver;
+     public GameObject WinScreen;
+
+     public int score;
+     public Text scoreText;
+
+     public GameObject HealingEffect;
+     public GameObject DamageEffect;
 
      public int maxHealth = 5;
      public float timeInvincible = 2.0f;
@@ -27,6 +38,8 @@ public class RubyController : MonoBehaviour
      Vector2 lookDirection = new Vector2(1,0);
     
      AudioSource audioSource;
+
+     bool _GameOver;
 
     // Start is called before the first frame update
     void Start()
@@ -92,6 +105,29 @@ public class RubyController : MonoBehaviour
              }
         }  
 
+            if (score == 2)
+                {
+                    WinScreen.SetActive(true);
+                }
+
+
+        //This is Our GameOver Code
+            if (currentHealth == 0)
+                 {
+                  GameOver.SetActive(true);
+                  speed = 0.0f;
+                  _GameOver = true;
+
+                    if (Input.GetKeyDown(KeyCode.R))
+                        {
+                            if(_GameOver == true)
+                            {
+                                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                            }
+                        }
+
+                 }
+            
         
     
     }  
@@ -103,6 +139,8 @@ public class RubyController : MonoBehaviour
         position.y = position.y + speed * vertical * Time.deltaTime;
         
         rigidbody2d.MovePosition(position);
+
+        
     }
 
     public void ChangeHealth(int amount)
@@ -115,6 +153,12 @@ public class RubyController : MonoBehaviour
             
              isInvincible = true;
              invincibleTimer = timeInvincible;
+
+             GameObject DamageEffectObject = Instantiate(DamageEffect, rigidbody2d.position + Vector2.up * 0.5f, Quaternion.identity);
+        }
+        if (amount > 0)
+        {
+            GameObject HealingEffectObject = Instantiate(HealingEffect, rigidbody2d.position + Vector2.up * 0.5f, Quaternion.identity);
         }
 
          currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
@@ -128,5 +172,26 @@ public class RubyController : MonoBehaviour
          projectile.Launch(lookDirection, 300);
 
          animator.SetTrigger("Launch");
+        
+
+    }
+//Score Counter...This was hard
+     public void ChangeScore(int scoreAmount)
+    {
+        if (scoreAmount > 0)
+        {
+           score = (score + scoreAmount);
+      
+
+        }
+    
+     scoreText.text = "Fixed Robots: " + score.ToString();
+    }
+
+
+
+    public void GameOverText()
+    {
+       
     }
 }
