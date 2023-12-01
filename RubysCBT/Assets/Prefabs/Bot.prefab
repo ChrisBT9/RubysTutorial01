@@ -150,6 +150,7 @@ MonoBehaviour:
   speed: 3
   vertical: 0
   changeTime: 3
+  fixSound: {fileID: 8300000, guid: 64afa7cc05c10254dab9dc4694ebe0d7, type: 3}
   smokeEffect: {fileID: 5553551394744273526}
 --- !u!95 &6067848202432173836
 Animator:

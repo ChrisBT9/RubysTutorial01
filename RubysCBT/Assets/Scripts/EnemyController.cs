@@ -8,6 +8,9 @@ public class EnemyController : MonoBehaviour
     public bool vertical;
     public float changeTime = 3.0f;
 
+    public  AudioClip fixSound;
+    AudioSource audioSource;
+
     public ParticleSystem smokeEffect;
 
     Rigidbody2D rigidbody2D;
@@ -46,6 +49,8 @@ private RubyController rubyController;
             print ("Cannot find GameController Script!");
 
         }
+
+        audioSource = GetComponent<AudioSource>();
  
 
     }
@@ -108,8 +113,9 @@ private RubyController rubyController;
     {
         broken = false;
         rigidbody2D.simulated = false;
-        //optional if you added the fixed animation
+        //Code Made by Michael Modded origianl Sound
         animator.SetTrigger("Fixed");
+        PlaySound(fixSound);
 
         smokeEffect.Stop();
 
@@ -117,6 +123,11 @@ private RubyController rubyController;
         {
                  rubyController.ChangeScore(1); //this line of code is increasing Ruby's health by 1!
          }
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 
 }
